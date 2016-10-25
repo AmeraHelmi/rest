@@ -35,7 +35,8 @@
         </div>
     </div>
 </nav>
-<div style="background-color: #ede1ae;height:100%" id="printTable">
+@if(count($items) >0)
+<div style="background-color: rgba(255,255,255,1);height:100%;width: 653px;margin-left: 368px;" id="printTable">
   <form class="form-inline">
   <div class="form-group">
      <label style="margin-left: 16px;" for="date">التاريخ:</label>
@@ -46,8 +47,7 @@
      <label class="form-control" id="total" >{{ $amount }}</label>
    </div>
  </form>
- <div id="content">
-   @if(count($items) >0)
+ <div id="content" >
 
   <table class="table" style="border: 1px solid black;">
     <thead>
@@ -69,14 +69,14 @@
     </tbody>
   </table>
 
+  <ul class="pager" id="page">
+     <li><a href="#" id="previous" data-id="{{ $item->id}}" >السابق</a></li>
+     <li><a href="#" id="next" data-id="{{ $item->id}}">التالى</a></li>
+    <li><a href="#" id="print">طباعة</a></li>
+  </ul>
 </div>
 </div>
 
-<ul class="pager">
-   <li><a href="#" id="previous" data-id="{{ $item->id}}" >السابق</a></li>
-   <li><a href="#" id="next" data-id="{{ $item->id}}">التالى</a></li>
-  <li><a href="#" id="print">طباعة</a></li>
-</ul>
 @endif
 <script type='text/javascript'>
 function asd($var)
@@ -92,7 +92,11 @@ function printData()
    newWin.close();
 }
 
-$(document).on('click', '#print', function() {printData();
+$(document).on('click', '#print', function() {
+  $('#page').hide();
+  printData();
+  $('#page').show();
+
 });
 $(document).on('click', '#next', function() {
       $lastid=$(this).data("id");

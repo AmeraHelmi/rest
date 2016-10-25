@@ -35,22 +35,24 @@
         </div>
     </div>
 </nav>
-<div style="background-color: #ede1ae;height:100%" id="printTable">
+@if(count($items) >0)
+
+<div style="background-color: rgba(255,255,255,1);height:100%;width: 653px;margin-left: 368px;" id="printTable">
 <!--  -->
-  <div  style="font-size: 14;color: black;" id="date">{{ $datenow }}</div>
+  <div style="font-size: 23px;color: black;margin-right: 261px;" id="date">{{ $datenow }}</div>
 <br>
 @if( $tel != 0)
 <div id="cust">
-<label style="color: blue;font-size: 18;"> اسم العميل
-  <div style="font-size: 14;color: black;">{{ $name}}</div>
+<label style="color: blue;font-size: 18px;"> اسم العميل
+  <div style="font-size: 14px;color: black;">{{ $name}}</div>
 </label>
 <br>
-<label style="color: blue;font-size: 18;"> تليفون العميل
-  <div style="font-size: 14;color: black;">{{ $tel}}</div>
+<label style="color: blue;font-size: 18px;"> تليفون العميل
+  <div style="font-size: 14px;color: black;">{{ $tel}}</div>
 </label>
 <br>
-<label style="color: blue;font-size: 18;">عنوان العميل
-  <div style="font-size: 14;color: black;">{{ $address}}</div>
+<label style="color: blue;font-size: 18px;">عنوان العميل
+  <div style="font-size: 14px;color: black;">{{ $address}}</div>
 </label>
 </div>
 @endif
@@ -58,23 +60,23 @@
 <table class="table" style="border: 1px solid black;">
   <thead>
     <tr>
-      <th style="text-align: center;">الظبط</th>
-      <th style="text-align: center;">السعر</th>
-      <th style="text-align: center;">الحجم</th>
-      <th style="text-align: center;">الوجبة</th>
+      <th style="text-align: center;border: 1px solid black;">الظبط</th>
+      <th style="text-align: center;border: 1px solid black;">السعر</th>
+      <th style="text-align: center;border: 1px solid black;">الحجم</th>
+      <th style="text-align: center;border: 1px solid black;">الوجبة</th>
     </tr>
   </thead>
   <tbody>
-    @if(count($items) >0)
+
     @foreach($items as $item)
     <tr>
-      <td style="text-align: center;border: 1px solid black;" id="remove_item">
+      <td style="text-align: center;" id="remove_item">
             <a href="#"data-id="{{ $item['price']}}" item="{{ $item['name'] }}-{{ $item['type'] }}" invoice="{{ $invoice_id}}" >
               <span class="	glyphicon glyphicon-remove" style="color:red;font-size: 31px;"></span></a>
       </td>
-      <td style="text-align: center;border: 1px solid black;">{{ $item['price'] }}</td>
-      <td style="text-align: center;border: 1px solid black;">{{ $item['type'] }}</td>
-      <td style="text-align: center;border: 1px solid black;">{{ $item['name'] }}</td>
+      <td style="text-align: center;">{{ $item['price'] }}</td>
+      <td style="text-align: center;">{{ $item['type'] }}</td>
+      <td style="text-align: center;">{{ $item['name'] }}</td>
     </tr>
     @endforeach
   </tbody>
@@ -87,6 +89,8 @@
 </ul>
 </div>
 </div>
+@else
+<div style="text-align: center;font-size: 28px;font-weight: bold;">لا توجد محتوى</div>
 @endif
 <script type='text/javascript'>
 function printData()

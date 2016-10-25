@@ -9,7 +9,6 @@ Route::GET     ('/user_edit/{id}',            'RestController@user_edit');
 Route::GET     ('/user_add/{id}',            'RestController@user_add');
 Route::POST     ('/new_user',            'RestController@new_user');
 Route::POST     ('/user_update',            'RestController@user_update');
-Route::POST     ('/get_items',            'RestController@get_items');
 Route::POST     ('/calculate',            'RestController@calculate');
 Route::POST     ('/loadmore',            'RestController@loadmore');
 Route::POST     ('/items_loadmore',            'RestController@items_loadmore');

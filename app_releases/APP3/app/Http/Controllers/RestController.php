@@ -54,74 +54,6 @@ class RestController extends Controller
 
 	}
 
-	public function get_items(Request $request)
-	{
-		$cat_id=$request->cat_id;
-		$index=strpos($cat_id,',');
-		$invoice_id=substr($cat_id,$index+1);
-		$cat_id=substr($request->cat_id,0,$index);
-		$item=new Item;
-		$items=$item->select(array('items.id as id',
-															'items.name as name',
-															'items.s_price as s_price',
-															'items.l_price as l_price',
-														  'items.m_price as m_price'))
-								->where('category_id',$cat_id)->get();
-		$output='';
-		if(count($items)>0)
-		{
-			$output.='
-							<div>
-								<div class="container" style="width:100%" >
-										<ul class="list-group">
-											<li class="list-group-item" style="font-size: 18px;font-family: inherit;">اسم الوجبة
-												<span style="float:left;top:-19px;">L  </span> &emsp;
-												<span style="float:left;top:-19px;padding-left: 70px;">M</span> &emsp;
-												<span style="float:left;top:-19px;padding-left: 70px;">S</span>
-					            </li>';
-		  foreach ($items as $item)
-			{
-				 $output.='
-				 <div id="item">
-							 <li class="list-group-item" style="font-size: 18px;font-family: inherit;" data-id="'. $item->id .'">'. $item->name .'
-							 <div id="plus">
-								 <input type="number"  style="float: left;width: 40px;margin-top: -24px;" value="0" price="'.$item->l_price.' data="'. $item->l_price.','. $invoice_id.','. $item->id.',كبير"/>
-						 </div>
-						 <div id="plus" style="margin-left: 80;" >
-							 <input type="number" style="float: left;width: 40px;margin-top: -24px;" value="0" price="'. $item->m_price .' data="'. $item->m_price.','. $invoice_id.','. $item->id.',وسط"/>
-					 </div>
-					 <div id="plus" style="margin-left: 160;" >
-						 <input type="number" style="float: left;width: 40px;margin-top: -24px;" value="0" price="'.$item->s_price .' data="'. $item->s_price .','. $invoice_id.','. $item->id.',صغير"/>
-				 </div>
-				 </li>
-			 </div>';
-      }
-			$output.='
-			<center>
-
-	</ul>
-	<label style="color: blue;font-size: 18;"> ملاحظات
-		<div id="info" style="font-size: 14;color: black;">0.0</div>
-	</label>
-	<br>
-	<label style="color: red;font-size: 18;"> الحساب الاجمالى
-		<div id="count" style="font-size: 24;color: blue;">0.0</div>
-	</label>
-';	}
-		else
-		{
-			$output.='  <div  style="text-align: center;font-size: 20;color:red;">لا توجد وجبات ف هذا القسم <div>';
-		}
-		$output.='	</div></div>
-		</div>
-</div>
-</div>
-</div>
-</div>
-';
-
-		 echo $output;
-	 }
 	 public function loadmore(Request $request)
 	 {
 		 $lastid=$request->lastid;
@@ -165,6 +97,7 @@ class RestController extends Controller
 		 </div>';
 		 echo $output;
 	 }
+
 	public function index(Request $request)
 	{
 		$customer=new Customer;
@@ -178,7 +111,7 @@ class RestController extends Controller
 	public function search(Request $request)
 	{
 		$search_word=$request->search;
-			$customers=Customer::where("tel" , 'like', "%$search_word%")->get();
+		$customers=Customer::where("tel" , 'like', "%$search_word%")->get();
 		return view('rest.index')
 						->with('status',"search")
 						->with('number',$search_word)
@@ -231,23 +164,20 @@ class RestController extends Controller
 		$category=new Category;
 		$categories=$category->select(array('categories.id as id',
 																				'categories.name as name'))->get();
-																				$item=new Item;
-																				$items=$item->select(array('items.id as id',
-																																	 'items.name as name',
-																																	 'items.l_price as l_price',
-																																	 'items.s_price as s_price',
-																																 	 'items.m_price as m_price'))
-																										 ->where('category_id',$id)->get();
-																										 return view('rest.index')
-																								 						->with('status',"menu")
-																								 						->with('categories',$categories)
-																														->with('items',$items)
-																								 						->with('total',$total)
-																								 						// ->with('invoice_id',$invoice->id)
-																								 						// ->with('number',session('tel'))
-																								 						;
-
+		$item=new Item;
+		$items=$item->select(array('items.id as id',
+															 'items.name as name',
+															 'items.l_price as l_price',
+															 'items.s_price as s_price',
+														 	 'items.m_price as m_price'))
+								 ->where('category_id',$id)->get();
+		return view('rest.index')
+								->with('status',"menu")
+		 						->with('categories',$categories)
+								->with('items',$items)
+		 						->with('total',$total);
 	}
+
 	public function save_session(Request $request)
 	{
 		$tel=$request->tel;
@@ -257,57 +187,31 @@ class RestController extends Controller
 		session(['total'=> 0]);
 		session(['amount'=> 0]);
 		session(['info'=>'']);
-		// echo session('tel');
 	}
+
 	public function menu(Request $request,$id)
 	{
 		$total=session('total');
 		session(['tel'=> $id]);
-
-			$category=new Category;
+		$category=new Category;
 		$categories=$category->select(array('categories.id as id',
 								                        'categories.name as name'))->get();
 
 		if(count($categories)>0)
 		{
-			// dd($categories[0]->id);
-		$item=new Item;
-		$items=$item->select(array('items.id as id',
+				$item=new Item;
+				$items=$item->select(array('items.id as id',
 															 'items.name as name',
 															 'items.l_price as l_price',
 															 'items.s_price as s_price',
 														 	 'items.m_price as m_price'))
-								 ->where('category_id',$categories[0]->id)->get();
-		// $customer= new Customer;
-		// $cust=$customer->select(array('id','name','tel'))->where('tel',session('tel'))->get();
-		// $invoice=new Invoice;
-		// $invoice->date=date('Y-m-d');
-		// $invoice->customer_id=$cust[0]->id;
-		// $invoice->type="محل";
-		// $invoice->save();
-		// $invoice_item=new Invoice_item;
-		// $invoice_item->invoice_id=$invoice->id;
-		// $invoice_item->save();
-		// $invoice_item->date=date("Y-m-d",strtotime($invoice_item->created_at));
-		// $invoice_item->save();
-		return view('rest.index')
-						->with('status',"menu")
-						->with('categories',$categories)
-						->with('items',$items)
-						->with('total',$total)
-						// ->with('invoice_id',$invoice->id)
-						// ->with('number',session('tel'))
-						;
+								 		->where('category_id',$categories[0]->id)->get();
+					return view('rest.index')
+											->with('status',"menu")
+											->with('categories',$categories)
+											->with('items',$items)
+											->with('total',$total);
 		}
-		// else {
-		// 	// no categories
-		// 	$customer=new Customer;
-		// 	$customers=$customer->select(array('id','name','tel','address'))->orderBy('id','desc')->take(2)->get();
-		// 	return view('rest.index')
-		// 					->with('status',"index")
-		// 					->with('customers',$customers);
-		//
-		// }
 	}
 
 	public function report(Request $request)
@@ -336,23 +240,20 @@ class RestController extends Controller
 						->with('amount',$total_amount)
 						->with('items',$invoice_items->take(10));
 	}
+
 	public function item_remove(Request $request)
 	{
 		$invoice_id=$request->invoice_id;
 		$invoice=Invoice::find($invoice_id);
 		$invoice->total-=$request->price;
 		$invoice->save();
-//
 		$invoice_t=new Invoice_item;
 		$invoice_item=$invoice_t->select(array('id','invoice_id','no_items','info'))->where('invoice_id',$invoice_id)->first();
-
 		$invoice_item->no_items--;
 		$invoice_item->info = preg_replace('/'.$request->item.'/','',$invoice_item->info,1);
 		$invoice_item->save();
- 	// 	echo $request->item;
 		$inv=new Invoice;
 		$inv_obj=$inv->select(array('total'))->where('id',$invoice_id)->first();
-
 		$invoice_t=new Invoice_item;
 		$invoice_item=$invoice_t
 												->select(array(
@@ -378,43 +279,37 @@ class RestController extends Controller
 				{
 					 $items[$i]['price']=$obj_item->s_price;
 					 $items[$i]['id']=$obj_item->id;
-					//  $output.=$obj_item->name ."=".$obj_item->s_price."\n\r";
 					 $i++;
 				}
 				if($type == "كبير")
 				{
 					$items[$i]['price']=$obj_item->l_price;
 					$items[$i]['id']=$obj_item->id;
-					// $output.=$obj_item->name ."=".$obj_item->l_price."\n\r";
 					$i++;
 				}
 				if($type == "وسط")
 				{
 					$items[$i]['price']=$obj_item->m_price;
 					$items[$i]['id']=$obj_item->id;
-					// $output.=$obj_item->name ."=".$obj_item->m_price."\n\r";
 					$i++;
 				}
 		}
 
-	$output='';
+		$output='';
  		unset($items[$i]);
-// 		$output='';
  		$output.='
 		<div style="background-color: #ede1ae;height:100%" id="printTable">
-
-		 <div id="content">
-
-		<table class="table" style="border: 1px solid black;">
-		  <thead>
-		    <tr>
-		      <th style="text-align: center;">الظبط</th>
-		      <th style="text-align: center;">السعر</th>
-		      <th style="text-align: center;">الحجم</th>
-		      <th style="text-align: center;">الوجبة</th>
-		    </tr>
-		  </thead>
-		  <tbody>';
+		 		<div id="content">
+							<table class="table" style="border: 1px solid black;">
+		  							<thead>
+		    								<tr>
+											      <th style="text-align: center;">الظبط</th>
+											      <th style="text-align: center;">السعر</th>
+											      <th style="text-align: center;">الحجم</th>
+											      <th style="text-align: center;">الوجبة</th>
+		    								</tr>
+		  								</thead>
+		  								<tbody>';
 		    if(count($items) >0)
 				{
 		    foreach($items as $item)
@@ -423,7 +318,8 @@ class RestController extends Controller
 		    <tr>
 		      <td style="text-align: center;border: 1px solid black;" id="remove_item">
 					<a href="#"data-id="'.$item['price'].'" item="'. $item['name'] .'-'. $item['type'] .'" invoice="'.$invoice_id.'" >
-								<span class="	glyphicon glyphicon-remove" style="color:red;font-size: 31px;"></span></a>
+								<span class="	glyphicon glyphicon-remove" style="color:red;font-size: 31px;"></span>
+					</a>
 		      </td>
 		      <td style="text-align: center;border: 1px solid black;">'. $item['price'] .'</td>
 		      <td style="text-align: center;border: 1px solid black;">'. $item['type'] .'</td>
@@ -503,9 +399,6 @@ echo $output;
 		$inv_item->save();
 		$arr=explode("&", $inv_item->info);
 		unset($arr[count($arr)-1]);
-		// dd($arr);
-		// $output='';
-		// 	$name=substr($obj,0,$index1);
 		$items=array();
 		$i=0;
 
@@ -522,21 +415,18 @@ echo $output;
 			{
 				$items[$i]['price']=$obj_item->s_price;
 				$items[$i]['id']=$obj_item->id;
-				//  $output.=$obj_item->name ."=".$obj_item->s_price."\n\r";
 				$i++;
 			}
 			if($type == "كبير")
 			{
 				$items[$i]['price']=$obj_item->l_price;
 				$items[$i]['id']=$obj_item->id;
-				// $output.=$obj_item->name ."=".$obj_item->l_price."\n\r";
 				$i++;
 			}
 			if($type == "وسط")
 			{
 				$items[$i]['price']=$obj_item->m_price;
 				$items[$i]['id']=$obj_item->id;
-				// $output.=$obj_item->name ."=".$obj_item->m_price."\n\r";
 				$i++;
 			}
 		}
@@ -548,7 +438,6 @@ echo $output;
 			$address=$customer->address;
 		}
 		else {
-			# code...
 			$name='';
 			$address='';
 		}
@@ -589,7 +478,6 @@ echo $output;
 		      							<tr>
 		        							<th style="text-align: center;">الحساب</th>
 		        							<th style="text-align: center;">الوقت</th>
-		        							<th style="text-align: center;">الطلب</th>
 		        							<th style="text-align: center;">رقم الفاتورة</th>
 		      							</tr>
 		    							</thead>
@@ -600,15 +488,19 @@ echo $output;
 		      								<tr>
 		        									<td style="text-align: center;border: 1px solid black;">'. $item->total .'</td>
 		        									<td style="text-align: center;border: 1px solid black;">'.date("H:i:s",strtotime( $item->date )).'</td>
-		        									<td style="text-align: center;border: 1px solid black;">'. $item->info .'</td>
 		        									<td style="text-align: center;border: 1px solid black;">'.$item->id.'</td>
 		      								</tr>';
 								}
 		    				$output.='
 		    									</tbody>
 		  								</table>
+											<ul class="pager" id="page">
+										     <li><a href="#" id="previous" data-id="'.$item->id.'" >السابق</a></li>
+										     <li><a href="#" id="next" data-id="'.$item->id.'">التالى</a></li>
+										    <li><a href="#" id="print">طباعة</a></li>
+										  </ul>
+											</div>
 										</div>
-									</div>
 									';
 					}
 					else
@@ -642,7 +534,6 @@ echo $output;
 														<tr>
 															<th style="text-align: center;">الحساب</th>
 															<th style="text-align: center;">الوقت</th>
-															<th style="text-align: center;">الطلب</th>
 															<th style="text-align: center;">رقم الفاتورة</th>
 														</tr>
 													</thead>
@@ -653,13 +544,17 @@ echo $output;
 																		<tr>
 																				<td style="text-align: center;border: 1px solid black;">'. $item->total .'</td>
 																				<td style="text-align: center;border: 1px solid black;">'.date("H:i:s",strtotime( $item->date )).'</td>
-																				<td style="text-align: center;border: 1px solid black;">'. $item->info .'</td>
 																				<td style="text-align: center;border: 1px solid black;">'.$item->id.'</td>
 																		</tr>';
 													}
 													$output.='
 																</tbody>
 															</table>
+															<ul class="pager" id="page">
+														     <li><a href="#" id="previous" data-id="'. $item->id.'" >السابق</a></li>
+														     <li><a href="#" id="next" data-id="'. $item->id.'">التالى</a></li>
+														    <li><a href="#" id="print">طباعة</a></li>
+														  </ul>
 														</div>
 													</div>
 												';

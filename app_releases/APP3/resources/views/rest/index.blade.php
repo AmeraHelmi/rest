@@ -1,4 +1,4 @@
-@extends('app');
+@extends('app')
 @section('content')
 
 <div class="container">
@@ -47,12 +47,12 @@
                               <img src="{{ asset('/admin-ui/assets/img/images/person.jpg') }}" class="img-thumbnail img-responsive" alt="" />
                           </div>
                           <div class="col-md-9">
-                              <h4> {{ $customer->name }}</h4>
+                              <h4 style="color:blue;"> {{ $customer->name }}</h4>
                               <h5>{{ $customer->tel }} </h5>
                           </div>
                           <div class="row">
                               <div class="col-md-12">
-                                  <h5>{{ $customer->address }}</h5>
+                                  <h5>العنوان :<span style="color:blue;">{{ $customer->address }}</span></h5>
                               </div>
                           </div>
                           <div class="hr"></div>
@@ -68,12 +68,12 @@
             @endforeach
             <!-- load more  -->
             <div id="remove">
-         <div class="col-sm-6 col-lg-offset-3">
-           <button class="btn btn-block btn-orange" id="btn_more" data-id="{{ $customer->id  }}"> للمــــزيد</button>
-         </div>
-         </div>
-            @endif
-            @endif
+                  <div class="col-sm-6 col-lg-offset-3">
+                      <button class="btn btn-block btn-orange" id="btn_more" data-id="{{ $customer->id  }}"> للمــــزيد</button>
+                  </div>
+            </div>
+    @endif
+@endif
 @if($status == 'search')
     @if(count($customers) >0)
         @foreach($customers as $customer)
@@ -84,12 +84,12 @@
                             <img src="{{ asset('/admin-ui/assets/img/images/person.jpg') }}" class="img-thumbnail img-responsive" alt="" />
                         </div>
                         <div class="col-md-9">
-                            <h4> {{ $customer->name }}</h4>
+                            <h4 style="color:blue;"> {{ $customer->name }}</h4>
                             <h5>{{ $customer->tel }} </h5>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <h5>{{ $customer->address }}</h5>
+                              <h5>العنوان :<span style="color:blue;">{{ $customer->address }}</span></h5>
                             </div>
                         </div>
                         <div class="hr"></div>
@@ -115,7 +115,7 @@
                           <h3 style="text-align:center;"> عفوا ! لا يوجد لدينا هذا المستخدم</h3>
                       </div>
                       <div class="hr"></div>
-                      <div class="col-md-6">
+                      <div class="col-md-6" style="margin-right: 113px;margin-top: 21px;">
                           <a href="{{ url('/user_add',$number)}}" class="btn btn-primary btn-primary">اضافة جديد<span class="glyphicon glyphicon-check"></span></a>
                       </div>
                   </div>
@@ -130,21 +130,23 @@
             <div class="searchresult">
                 <div class="row">
                     <div class="col-md-9">
-                        <h1 style="text-align:center;">{{ $customer->tel }} </h1>
+                        <h1 style="margin-right: 171px;color: red;">{{ $customer->tel }} </h1>
                     </div>
                     <form class="navbar-form"  action="{{url('/user_update')}}" method="post">
                         <input type="hidden" class="form-control" value="{{$customer->id}}" name="id" >
                         <div class="form-group">
-                            <input type="text" class="form-control" value="{{ $customer->name }}" name="name" style="width: 100%;height: 50;font-size:28;"/>
+                          <label style="color: blue;font-size: 18px;">الاسم</label>
+                            <input type="text" class="form-control" value="{{ $customer->name }}" name="name" style="width: 502px;height: 52px;font-size:28px;"/>
                             <br/>
                             <br/>
-                            <input type="text" class="form-control" value="{{ $customer->address }}" name="address" style="width: 100%;height: 50;font-size:28;"/>
+                            <label style="color: blue;font-size: 18px;">العنوان</label>
+                            <input type="text" class="form-control" value="{{ $customer->address }}" name="address" style="width: 502px;height: 52px;font-size:28px;"/>
                         </div>
                         <br/>
                         <br/>
                         <div class="col-md-6">
-                             <button style="margin-right: 150;" class="btn btn-primary btn-primary" type="submit">
-                             <i class="glyphicon glyphicon-check">تعديل</i></button>
+                             <button style="margin-right: 197px;margin-top: 13px;" class="btn btn-primary btn-primary" type="submit">
+                             <i class="glyphicon glyphicon-check"> تعديل </i></button>
                         </div>
                   </div>
               </form>
@@ -158,21 +160,23 @@
         <div class="searchresult">
             <div class="row">
                 <div class="col-md-9">
-                    <h1 style="text-align:center;">{{ $number }} </h1>
+                  <h1 style="margin-right: 171px;color: red;">{{ $number}} </h1>
                 </div>
                 <form class="navbar-form"  action="{{url('/new_user')}}" method="post">
                       <input type="hidden" class="form-control" name="id" value="{{ $number}}">
                       <div class="form-group">
-                          <input type="text" class="form-control" name="name" placeholder="ادخل الاسم هنا .." style="width: 100%;height: 50;font-size:28;"/>
+                        <label style="color: blue;font-size: 18px;">الاسم</label>
+                          <input type="text" class="form-control" name="name" placeholder="ادخل الاسم هنا .." style="width: 500px;height: 48px;font-size:28px;"/>
                           <br/>
                           <br/>
-                          <input type="text" class="form-control"  name="address" placeholder="ادخل العنوان هنا .." style="width: 100%;height: 50;font-size:28;"/>
+                          <label style="color: blue;font-size: 18px;">العنوان</label>
+                          <input type="text" class="form-control"  name="address" placeholder="ادخل العنوان هنا .." style="width: 502px;height: 52px;font-size:28px;"/>
                       </div>
                       <br/>
                       <br/>
                       <div class="col-md-6">
-                          <button style="margin-right: 150;" class="btn btn-primary btn-primary" type="submit">
-                          <i class="glyphicon glyphicon-check">اضافة</i></button>
+                          <button style="margin-right: 197px;margin-top: 13px;" class="btn btn-primary btn-primary" type="submit">
+                          <i class="glyphicon glyphicon-check"> اضافة </i></button>
                       </div>
                   </div>
               </form>
@@ -188,12 +192,12 @@
                 <img src="{{ asset('/admin-ui/assets/img/images/person.jpg') }}" class="img-thumbnail img-responsive" alt="" />
             </div>
             <div class="col-md-9">
-                <h4> {{ $customer->name }}</h4>
+                <h4 style="color:blue;"> {{ $customer->name }}</h4>
                 <h5>{{ $customer->tel }} </h5>
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <h5>{{ $customer->address }}</h5>
+                  <h5>العنوان :<span style="color:blue;">{{ $customer->address }}</span></h5>
                 </div>
             </div>
             <div class="hr"></div>
@@ -212,16 +216,14 @@
   <!-- {{-- update --}} -->
   <div class="col-md-6 col-md-offset-3" style="background-color: #f1e09b;margin-right:0%;width:95%">
       <div class="searchresult" style="height:100%;">
-        <!-- <a href="#" id="test">here </a> -->
         <div id="asden"></div>
           <div class="row">
               <div class="container" style="width:100%">
-                  <!-- <h1 style="text-align:center;"> </h1> -->
                   <ul class="nav nav-tabs" id="test">
                     @if(count($categories) >= 1)
                       @foreach($categories as $category)
                         <li style="float:right;"  >
-                          <a  href="{{ url('/all_items',$category->id)}}" style="font-size:20;" >
+                          <a  href="{{ url('/all_items',$category->id)}}" style="font-size:20px;" >
                             {{ $category->name }}
                           </a>
                         </li>
@@ -233,46 +235,44 @@
                     <div >
                 				<div class="container" style="width:100%" >
                           @if(count($items)> 0)
-                		<ul class="list-group">
-                      <li class="list-group-item" style="font-size: 18px;font-family: inherit;">اسم الوجبة
-
-                        <span style="float:left;top:-19px;">L  </span> &emsp;
-                        <span style="float:left;top:-19px;padding-left: 70px;">M</span> &emsp;
-                        <span style="float:left;top:-19px;padding-left: 70px;">S</span>
-                </li>
+                		        <ul class="list-group">
+                                <li class="list-group-item" style="font-size: 18px;font-family: inherit;">اسم الوجبة
+                                    <span style="float:left;top:-19px;">كبير</span> &emsp;
+                                    <span style="float:left;top:-19px;padding-left: 70px;">وسط</span> &emsp;
+                                    <span style="float:left;top:-19px;padding-left: 70px;">صغير</span>
+                                </li>
                 		@foreach ($items as $item)
                     <div id="item">
                 					<li class="list-group-item element" style="font-size: 18px;font-family: inherit;" data-id="{{ $item->id }}" > {{ $item->name }}
                           <div id="plus">
                             <input type="number"  style="float: left;width: 40px;margin-top: -24px;" value="0" price="{{ $item->l_price }}" size="كبير" name="{{ $item->name}}" />
                         </div>
-                        <div id="plus" style="margin-left: 80;" >
+                        <div id="plus" style="margin-left: 97px;" >
                           <input type="number" style="float: left;width: 40px;margin-top: -24px;" value="0" price="{{ $item->m_price }}" size="وسط" name="{{ $item->name}}"/>
                       </div>
-                      <div id="plus" style="margin-left: 160;" >
+                      <div id="plus" style="margin-left: 201px;" >
                         <input type="number" style="float: left;width: 40px;margin-top: -24px;" value="0" price="{{ $item->s_price }}" size="صغير"  name="{{ $item->name}}"/>
                     </div>
                     </li>
                   </div>
-                    @endforeach
-                    <center>
-
+                  @endforeach
                 </ul>
-                <label style="color: blue;font-size: 18;"> ملاحظات
-                	<div id="info" style="font-size: 14;color: black;">0.0</div>
+                <label style="color: blue;font-size: 18px;"> ملاحظات
+                	<div id="info" style="font-size: 14px;color: #c34329;"></div>
                 </label>
                 <br>
-                <label style="color: red;font-size: 18;"> الحساب الاجمالى
-                	<div id="count" style="font-size: 24;color: blue;">{{ $total }}</div>
+                <label style="color: blue;font-size: 18px;"> الحساب الاجمالى
+                	<div id="count" style="font-size: 24;color:  #c34329;">{{ $total }}</div>
                 </label>
                 <div >
                 </hr>
                   <form method="POST" action="{{url('/finish')}}">
-                    <input type="checkbox" name="type" style="margin-top: 55px;" id="type" value="ديليفرى">
-                     <span style="color: red;font-size: 23px;">ديليفرى</span><br>
-
-                  <button class="btn btn-block btn-orange"  type="submit"  > انهاء</button>
-                </form>
+                      <input type="checkbox" name="type" style="margin-top: 15px;margin-right: 22px;" id="type" value="ديليفرى">
+                      <span style="color: blue;font-size: 23px;">ديليفرى</span><br>
+                      <button class="btn btn-primary btn-orange" style="width: 200px;margin-right: 347px;height: 71px;" type="submit"  >
+                        <span style="color: black;font-size: 36px;font-family: initial;font-weight: bold;"> انهاء</span>
+                      </button>
+                  </form>
                 </div>
                 @else
                 <div  style="text-align: center;font-size: 20;color:red;">لا توجد وجبات ف هذا القسم <div>
@@ -354,7 +354,6 @@ $("#plus input").on('blur', function(e) {
 $(document).ready(function(e) {
 $("#s_session").on('click', function(e) {
   $tel=$(this).attr("data");
-   alert($tel);
   $.ajax({
      url: "{{ url('save_session')}}",
      type: "POST",

@@ -54,10 +54,10 @@ class ItemController extends Controller
 				$item = new Item;
 				if($request->name)
 				{
-							$item->name    =$request->name;
-							$item->s_price    =$request->s_price;
-							$item->m_price    =$request->m_price;
-							$item->l_price    =$request->l_price;
+							$item->name           =$request->name;
+							$item->s_price        =$request->s_price;
+							$item->m_price        =$request->m_price;
+							$item->l_price        =$request->l_price;
 					  	$item->category_id    =$request->category_id;
 							$item->save();
 							if($request->ajax())
@@ -88,11 +88,11 @@ class ItemController extends Controller
 	public function update(Request $request)
 	{
       	$item	= Item::find(session('itemid'));
-				$item->name    =$request->name;
-				$item->s_price    =$request->s_price;
-				$item->m_price    =$request->m_price;
-				$item->l_price    =$request->l_price;
-			 	$item->category_id    =$request->category_id;
+				$item->name            =$request->name;
+				$item->s_price         =$request->s_price;
+				$item->m_price         =$request->m_price;
+				$item->l_price         =$request->l_price;
+			 	$item->category_id     =$request->category_id;
    			$item->save();
 	 			if($request->ajax())
 				{

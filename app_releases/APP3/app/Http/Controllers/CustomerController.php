@@ -40,9 +40,9 @@ class CustomerController extends Controller
      		$customer = new Customer;
 		    if($request->name)
 		    {
-		        $customer->name                =$request->name;
+		        $customer->name              =$request->name;
 						$customer->tel               =$request->tel;
-						$customer->address                 =$request->address;
+						$customer->address           =$request->address;
 						$customer->save();
 						if($request->ajax())
 						{
@@ -60,7 +60,7 @@ class CustomerController extends Controller
   public function edit(Customer $customer , Request $request , $id)
 	{
 
-		   $customer       = Customer::find($id);
+		   $customer = Customer::find($id);
 			 session(['customerid'   => $customer->id]);
 			 return response(array('msg' => 'Adding Successfull', 'data'=> $customer->toJson() ), 200)
 								->header('Content-Type', 'application/json');
@@ -72,15 +72,15 @@ class CustomerController extends Controller
 				$customer 	= Customer::find(session('customerid'));
 				if(!empty($_FILES))
 				{
-						$customer->name    =$request->name;
-						$customer->tel    =$request->tel;
-						$customer->address    =$request->address;
+						$customer->name         =$request->name;
+						$customer->tel   			  =$request->tel;
+						$customer->address    	=$request->address;
 				}
 				else
 				{
-						$customer->name    =$request->name;
-						$customer->tel    =$request->tel;
-						$customer->address    =$request->address;
+						$customer->name         =$request->name;
+						$customer->tel          =$request->tel;
+						$customer->address      =$request->address;
 		    }
 				$customer->save();
 				if($request->ajax())
