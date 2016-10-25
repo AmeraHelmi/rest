@@ -1,0 +1,6 @@
+#printTable{
+  background-color: #000;
+
+           table td:last-child {display:none}
+           table th:last-child {display:none}
+}
